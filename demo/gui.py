@@ -53,11 +53,23 @@ def invariant_stitcher(images, clean_pano=False):
     if ref == 0:
         if clean_pano:
             # Perform boundary crop for a clean border result
-            print('Cleaning...')
+            st.sidebar.text('Cleaning...')
             return crop_edges(panorama)
         return panorama
     else:
         return None
+
+
+def verbose_output(panorama, uploaded_images):
+    pass
+
+
+def simplified_output(panorama):
+    # Display the resulting panorama
+    if panorama is not None:
+        st.image(panorama)
+    else:
+        st.text("Please use more input images...")
 
 
 def main():
@@ -66,8 +78,10 @@ def main():
     
     uploaded_images = []
 
-    mode =['Verbose Output','Simplified Output']
+    mode =['Simplified Output', 'Verbose Output']
     mode_selection = st.sidebar.selectbox('Viewing Mode', mode)
+
+    clean_pano = st.sidebar.checkbox('Clean and Crop Result')
 
     if multiple_pngs:
         # Read and decode the uploaded images and save them to a list
@@ -76,16 +90,16 @@ def main():
             image = cv2.imdecode(file_bytes, 1) # Read in as a 3-channel image for the stitcher's stitch function
             uploaded_images.append(image)
             
-        print("No. of images uploaded", len(uploaded_images))
+        data_load_state = st.sidebar.text("Processing Images")
+        data_load_state.text('No. of images uploaded: ' + str(len(uploaded_images)))
 
         # Perform stitching using OpenCV's native stitching function
-        panorama = invariant_stitcher(uploaded_images, clean_pano=True)
+        panorama = invariant_stitcher(uploaded_images, clean_pano)
 
-        # Display the resulting panorama
-        if panorama is not None:
-            st.image(panorama)
+        if mode_selection == mode[1]:
+            verbose_output(panorama, uploaded_images)
         else:
-            print("Please use more input images...")
+            simplified_output(panorama)
 
 
 if __name__=='__main__':
