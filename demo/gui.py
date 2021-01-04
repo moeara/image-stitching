@@ -35,6 +35,7 @@ def crop_edges(panorama, pixel_bound=50, bordersize=10, mean=0):
     horizontal_edge = (np.count_nonzero(threshold_image, axis=1) > 0.9*threshold_image.shape[1]).nonzero()
     vertical_edge = (np.count_nonzero(threshold_image, axis=0) > 0.9*threshold_image.shape[0]).nonzero()
     
+    # Select the first and last encountered edge respectively
     y1, y2 = horizontal_edge[0][0], horizontal_edge[0][-1]
     x1, x2 = vertical_edge[0][0], vertical_edge[0][-1]
 
@@ -61,15 +62,18 @@ def invariant_stitcher(images, clean_pano=False):
 
 def main():
     # Create upload interface for selecting inmages to be uploaded  
-    multiple_pngs = st.file_uploader("Upload your set of PNG/JPEG images...", type=([".png", ".jpeg"]), accept_multiple_files=True)
+    multiple_pngs = st.sidebar.file_uploader("Upload your set of PNG/JPEG images...", type=([".png", ".jpeg"]), accept_multiple_files=True)
     
     uploaded_images = []
+
+    mode =['Verbose Output','Simplified Output']
+    mode_selection = st.sidebar.selectbox('Viewing Mode', mode)
 
     if multiple_pngs:
         # Read and decode the uploaded images and save them to a list
         for file_png in multiple_pngs:
             file_bytes = np.asarray(bytearray(file_png.read()), dtype=np.uint8)
-            image = cv2.imdecode(file_bytes, 1) # Read in as a 3-channel image for the stitch function
+            image = cv2.imdecode(file_bytes, 1) # Read in as a 3-channel image for the stitcher's stitch function
             uploaded_images.append(image)
             
         print("No. of images uploaded", len(uploaded_images))
