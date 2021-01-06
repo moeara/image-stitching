@@ -1,22 +1,9 @@
-import sys
 import streamlit as st
+import numpy as np
+import cv2
 
-sys.path.append('..')
-from stitchers import *
-
-def verbose_output(panorama, uploaded_images):
-    pass
-
-
-def simplified_output(panorama):
-    # Display the resulting panorama
-    if panorama is not None:
-        st.sidebar.text('Stitching Successful!')
-        st.subheader('Resulting Panorama')
-        st.image(panorama, use_column_width=True)
-    else:
-        st.markdown("Insufficient data, please use more input images or ensure the images have overlapping features...")
-        st.sidebar.text("Unable to stitch images...")
+import stitchers
+from output import visualise
 
 
 def main():
@@ -27,7 +14,7 @@ def main():
     
     uploaded_images = []
 
-    mode =['Simplified Output', 'Verbose Output']
+    mode = ['Simplified Output', 'Verbose Output']
     mode_selection = st.sidebar.selectbox('Step 2: Select a viewing Mode', mode)
 
     clean_pano = st.sidebar.checkbox('Clean and Crop Result')
@@ -45,12 +32,9 @@ def main():
 
         # Perform stitching using OpenCV's native stitching function
         st.sidebar.text('Attempting to stitch images...')
-        panorama = invariant_stitcher(uploaded_images, clean_pano)
+        panorama = stitchers.invariant_stitcher(uploaded_images, clean_pano)
 
-        if mode_selection == mode[1]:
-            verbose_output(panorama, uploaded_images)
-        else:
-            simplified_output(panorama)
+        visualise(panorama, uploaded_images, mode_selection)
 
 
 if __name__=='__main__':
