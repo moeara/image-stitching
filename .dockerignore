@@ -1,0 +1,9 @@
+# directories
+/data
+/tests
+/__pycache__
+
+# files
+demo.ipynb
+README.md
+
