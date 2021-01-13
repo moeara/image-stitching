@@ -5,10 +5,13 @@ ENV TZ=Africa/Cairo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # ubuntu installing - python, pip, graphviz
-RUN apt-get update &&\
-    apt-get install python3.8 -y &&\
-    apt-get install python3-pip -y && \
-    apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get update && apt-get install - y \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    python3.8-minimal \
+    python3-pip \
+ && rm -rf /var/lib/apt/lists/*
 
 # exposing default port for streamlit
 EXPOSE 8501
