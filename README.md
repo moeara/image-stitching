@@ -4,7 +4,10 @@ Please note that is project is still ongoing, all project files including this d
 
 ## Contents
 - Project Overview
-- Options for installing and running the demo
+- Obtaining Demo Code
+- Testing Data (Optional)
+- Running the Demo Locally using Docker
+- Running the Demo in your local workspace
 - Verbose Results
 
 #
@@ -14,18 +17,27 @@ The purpose of this project was to experiment with streamlit and docker for an i
 ![Demo](assets/demo.gif)
 
 #
+## Obtaining Demo Code
 
-## Testing Data [(*Source*)](https://sourceforge.net/adobe/adobedatasets/panoramas/home/Home/)
-Since the app relies on a GUI to select the input images you'd be free to use your own samples. 
-Considering the case in which data is not readily available you could choose to run the following:
-```bash
-cd data
-sudo chmod +x data_downloader.sh
-./data_downloader.sh
+To get started clone the demo code to your local device and navigate to that directory.
 ```
-Ten sequences from Adobe's Panorama Dataset will be downloaded and extracted into a data folder within your current work directory.
-#
+git clone https://github.com/Mo-637/image-stitching.git
+cd image-stitching
+```
 
+#
+## **Optional:** Testing Data [(*Source*)](https://sourceforge.net/adobe/adobedatasets/panoramas/home/Home/)
+Since the app relies on a GUI to select the input images to stitch you'd be free to use your own image sequences and samples. 
+In case data is not readily you may opt to downloading Adobe's Panorama Dataset. This dataset contains high quality sequences of ten outdoor scenes.
+
+Download and extract the test data it into the **data** folder within the cloned work directory.
+
+```
+chmod +x data/data_download.sh
+./data/data_download.sh
+```
+
+#
 ## Running the Demo Locally using Docker
 To follow though with this demo, please make sure that you have 
 [Git](https://github.com/git-guides/install-git) 
@@ -37,18 +49,6 @@ and
 or 
 [here](https://docs.docker.com/engine/security/rootless/) 
 to be able to run docker commands without needing ```sudo``` priveleges.**
-
-- Clone the demo code and navigate to that directory
-```
-git clone https://github.com/Mo-637/image-stitching.git
-cd image-stitching
-```
-
-- Download the test data (Optional)
-```
-chmod +x data/data_download.sh
-./data/data_download.sh
-```
 
 - Build the docker image
 ```
@@ -71,19 +71,13 @@ http://172.17.0.2:8501/
 ```
 docker ps -a -q
 ```
------------
-## Running the Demo in your local workspace
 
-If you prefer running the files in your workspace simply follow the steps below:
-- Clone the demo code
+#
+## Running the Demo in your local workspace
+If you prefer running the files in your workspace simply
+- Install the prerequisites (Streamlit, OpenCV 3/4 and Numpy)
 ```
-git clone https://github.com/Mo-637/image-stitching.git
-```
-- Download the test data (Optional)
-```
-cd image-stitching/data
-chmod +x data/data_download.sh
-./data/data_download.sh
+python3 -m pip install requirements.txt
 ```
 - Run the Demo
 ```
@@ -91,5 +85,4 @@ streamlit run demo/gui.py
 ```
 
 #
-
 ## Verbose Results (TBD)
