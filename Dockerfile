@@ -5,7 +5,7 @@ ENV TZ=Africa/Cairo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # ubuntu installing - python, pip, graphviz
-RUN apt-get update && apt-get install - y \
+RUN apt-get update && apt-get install -y \
     ffmpeg \
     libsm6 \
     libxext6 \
@@ -20,13 +20,13 @@ EXPOSE 8501
 WORKDIR /image-stitcher
 
 # copy over requirements
-#COPY requirements.txt ./requirements.txt
+COPY requirements.txt ./requirements.txt
+
+# install pip then packages
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # copying all files over
 COPY . .
 
-# install pip then packages
-RUN pip3 install -r requirements.txt
-
 # cmd to launch app when container is run
-CMD streamlit run demo/gui.py
+CMD ["streamlit", "run", "demo/gui.py"]
