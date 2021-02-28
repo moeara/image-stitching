@@ -1,7 +1,9 @@
 import streamlit as st
 from stitchers import traditional_stitcher
 
-def visualise(panorama, uploaded_images, mode_selection, modes=['Simplified Output', 'Verbose Output']):
+
+def visualise(panorama, uploaded_images, mode_selection,
+              modes=['Simplified Output', 'Verbose Output']):
     # Display the resulting panorama
     if panorama is not None:
         st.sidebar.text('Stitching Successful!')
@@ -16,16 +18,19 @@ def visualise(panorama, uploaded_images, mode_selection, modes=['Simplified Outp
             simplified_output(uploaded_images)
 
     else:
-        st.markdown("Insufficient data, please use more input images or ensure the images have overlapping features...")
+        st.markdown("Insufficient data, please use more input images \
+                    or ensure the images have overlapping features...")
         st.sidebar.text("Unable to stitch images...")
 
 
 def verbose_output(uploaded_images):
     # Displays the individual images including the following information:
-    # 1- Images with their corresponding features detections and matches with found by OpenCV
+    # 1- Images with their corresponding features
+    #    detections and matches with found by OpenCV
     # 2- Ground truth feature locations
 
-    st.header('Uploaded Images w/ detected feature annotations (Displayed in the order of upload)')
+    st.header('Uploaded Images w/ detected feature \
+              annotations (Displayed in the order of upload)')
     uploaded_images = traditional_stitcher(uploaded_images)
     # TODO Add feature matching indicators if applicable
     st.image(uploaded_images, width=400)
